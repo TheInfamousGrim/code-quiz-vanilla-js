@@ -1,0 +1,104 @@
+/* ----------------------------- root variables ----------------------------- */
+
+:root {
+  /* Color Pallete */
+  --bg-color: #eae6e0;
+  --font-color-general: #393939;
+  --font-color-negative: #eeeeee;
+  --buttons-color: #ff0f7b;
+  --correct-color: #9dd994;
+  --incorrect-color: #c76d6d;
+  /* General border radius */
+  --general-radius: 10px;
+  /* Fonts */
+  --bold-fonts: "Poppins", sans-serif;
+  --main-font: "Space Mono", monospace;
+  font-size: 16px;
+}
+
+/* ---------------------------- general settings ---------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-color);
+  font-family: var(--main-font);
+  width: 100vw;
+  height: 100vh;
+}
+
+/* headings */
+h1,
+h2 {
+  font-family: var(--bold-fonts);
+  margin: 10px 0;
+}
+
+h1 {
+  font-size: 4.236rem;
+}
+
+h2 {
+  font-size: 2.618rem;
+}
+
+/* buttons */
+button {
+  border-radius: var(--general-radius);
+  background: var(--buttons-color);
+  padding: 1rem;
+  font-family: var(--bold-fonts);
+  font-size: 1.618rem;
+  color: var(--font-color-negative);
+  border: none;
+}
+
+button:hover,
+button:focus {
+  transition: all 0.75s;
+  background: var(--font-color-negative);
+  color: var(--font-color-general);
+  cursor: pointer;
+}
+
+/* General mobile settings */
+
+@media only screen and (max-width: 768px) {
+  button {
+    font-size: 1rem;
+  }
+  h1 {
+    font-size: 2.618rem;
+  }
+  h2 {
+    font-size: 1.618rem;
+  }
+}
+
+/* ------------------------- quiz introduction page ------------------------- */
+
+.quiz-intro-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 5vw;
+  height: 100vh;
+}
+
+.quiz-description {
+  text-align: center;
+  width: 40vw;
+}
+
+/* Mobile settings */
+@media only screen and (max-width: 768px) {
+  .quiz-intro-img {
+    max-width: 80vw;
+  }
+  .quiz-description {
+    width: 100%;
+  }
+}
