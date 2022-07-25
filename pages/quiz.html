@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/CSS/normalize.css" />
+    <link rel="stylesheet" href="/CSS/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Space+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/Assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/Assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/Assets/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/Assets/favicons/site.webmanifest" />
+    <script src="/JS/quiz.js" async></script>
+    <title>Coding Quiz</title>
+  </head>
+  <body>
+    <div class="quiz-game-wrapper content-wrapper">
+      <header class="quiz-game-header colorful-headers">
+        <a href="/pages/highscores.html" class="high-scores-link">
+          View High Scores
+        </a>
+        <p class="time-left">Time: <span class="time-counter"></span></p>
+      </header>
+      <main class="quiz-body">
+        <section class="question-asked">
+          <p class="question-text">What is the answer to this question?</p>
+        </section>
+        <section class="multiple-answers">
+          <ol class="answers-list">
+            <li class="answer-1">
+              <button class="choice-btns">Choice 1</button>
+            </li>
+            <li class="answer-2">
+              <button class="choice-btns">Choice 2</button>
+            </li>
+            <li class="answer-3">
+              <button class="choice-btns">Choice 3</button>
+            </li>
+            <li class="answer-4">
+              <button class="choice-btns">Choice 4</button>
+            </li>
+          </ol>
+        </section>
+      </main>
+      <footer class="answer-status-section">
+        <p class="answer-status-text">CORRECT!</p>
+      </footer>
+    </div>
+    <div class="quiz-completed-wrapper content-wrapper">
+      <h1 class="quiz-completed-title colorful-headers">Quiz Quashed!</h1>
+      <p class="final-score-text">
+        Your final score is <span class="result-number">71</span>
+      </p>
+      <form action="">
+        <label for="playerName" class="player-name-label"
+          >Enter your name:</label
+        >
+        <input type="text" name="playerName" id="playerName" />
+        <input type="submit" value="Submit" class="submit-name-btn" />
+      </form>
+    </div>
+  </body>
+</html>

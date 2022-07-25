@@ -30,28 +30,23 @@
       href="/Assets/favicons/favicon-16x16.png"
     />
     <link rel="manifest" href="/Assets/favicons/site.webmanifest" />
-    <script src="/JS/script.js" defer></script>
-    <title>JavaScript Code Quiz</title>
+    <title>Quiz High Scores</title>
   </head>
   <body>
-    <div class="quiz-intro-wrapper content-wrapper">
-      <h1 class="quiz-intro-title">Coding Quiz</h1>
-      <img
-        src="/Assets/app-imgs/code-quiz-banner.png"
-        alt="A mind map of icons symbolizing different web technologies and languages like JavaScript or mongoDB"
-        width="600"
-        class="quiz-intro-img"
-      />
-      <p class="quiz-description">
-        A collection of coding questions to test the mind and expand your
-        cranial forces. Answer with haste, for time is not on your side. But
-        beware, every incorrect answer shall lead to a 10 second deduction in
-        time!!! Dare you take up the gauntlet and attain the highest of
-        scores...?
-      </p>
-        <div class="home-links-container">
-            <a href="/pages/quiz.html" class="quiz-link">Start Quiz</a>
-            <a href="/pages/highscores.html" class="high-scores-link-btn">High Scores</a>
-        </div>
+    <div class="high-scores-wrapper content-wrapper">
+      <h1 class="high-scores-title colorful-headers">High Scores</h1>
+      <ol class="high-scores-list">
+        <li class="player-card">
+          <span id="playerName">GrimFunk</span> -
+          <span id="playerScore">71</span>
+        </li>
+        <li class="player-card">Bingo - 82</li>
+      </ol>
+      <div class="high-score-btn-section">
+        <a href="/pages/quiz.html" class="quiz-again-btn">Quiz Again</a>
+        <button id="clearHighScores">Clear High Scores</button>
+        <a href="../index.html" class="quiz-rules-btn">Quiz Rules</a>
+      </div>
+    </div>
   </body>
 </html>
