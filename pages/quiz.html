@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/CSS/normalize.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Space+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/Assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/Assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/Assets/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/Assets/favicons/site.webmanifest" />
+    <link rel="stylesheet" href="/CSS/style.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.10/purify.min.js"
+      integrity="sha512-Qr/d6af6cN41/GIKiSmrQd4Y19/fo0YvWhD1VND8O+BsfbFBaZI4K7VVPoUZrd8PzMQ3CE71CkMjhrKf1NbhdQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      async
+    ></script>
+    <script src="/JS/quiz.js" async></script>
+    <title>Coding Quiz</title>
+  </head>
+  <body>
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+    </div>
+    <div class="quiz-game-wrapper content-wrapper hidden">
+      <header class="quiz-game-header colorful-headers">
+        <div class="left-hud-item-container">
+          <a href="/pages/highscores.html" class="high-scores-link">
+            View High Scores
+          </a>
+          <div class="hud-item question-counter-container">
+            <p class="hud-prefix">Question:</p>
+            <h2 class="hud-main-text question-counter">1/3</h2>
+          </div>
+        </div>
+        <div class="right-hud-item-container">
+          <div class="hud-item score-container">
+            <p class="hud-prefix">Score:</p>
+            <h2 class="hud-main-text score">0</h2>
+          </div>
+          <div class="time-left-container">
+            <p class="time-left">Time:</p>
+            <p class="time-counter"></p>
+          </div>
+        </div>
+      </header>
+      <main class="quiz-body">
+        <section class="question-asked">
+          <p class="question-text">What is the Answer to this question?</p>
+        </section>
+        <section class="multiple-answers">
+          <ol class="answers-list"></ol>
+        </section>
+      </main>
+      <footer class="answer-status-section">
+        <p class="answer-status-text">PLACEHOLDER!</p>
+      </footer>
+    </div>
+    <div class="quiz-completed-wrapper content-wrapper"></div>
+  </body>
+</html>
