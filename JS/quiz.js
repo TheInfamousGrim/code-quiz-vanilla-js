@@ -39,7 +39,7 @@ Your final score is <span class="result-number">69</span>
 <input type="submit" value="Submit" id="submitNameBtn" disabled />
 </form>
 <div class="quiz-completed-links">
-    <a href="/pages/quiz.html" class="quiz-again-btn">Quiz Again</a>
+    <a href="../pages/quiz.html" class="quiz-again-btn">Quiz Again</a>
     <a href="../index.html" class="quiz-rules-btn">Quiz Rules</a>
 </div>
 `;
