@@ -74,7 +74,7 @@ Some of the other things I learned were:
 
 ## Usage
 
-If you would like to use this application please follow [this link]()
+If you would like to use this application please follow [this link](https://theinfamousgrim.github.io/code-quiz-vanilla-js/)
 
 ## Technology
 
