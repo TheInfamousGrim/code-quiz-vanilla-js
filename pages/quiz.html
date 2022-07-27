@@ -41,22 +41,29 @@
     <title>Coding Quiz</title>
   </head>
   <body>
-    <div class="quiz-game-wrapper content-wrapper">
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+    </div>
+    <div class="quiz-game-wrapper content-wrapper hidden">
       <header class="quiz-game-header colorful-headers">
-        <a href="/pages/highscores.html" class="high-scores-link">
-          View High Scores
-        </a>
-        <div class="hud-item">
-          <p class="hud-prefix">Question:</p>
-          <h2 class="hud-main-text question-counter">1/3</h2>
+        <div class="left-hud-item-container">
+          <a href="/pages/highscores.html" class="high-scores-link">
+            View High Scores
+          </a>
+          <div class="hud-item question-counter-container">
+            <p class="hud-prefix">Question:</p>
+            <h2 class="hud-main-text question-counter">1/3</h2>
+          </div>
         </div>
-        <div class="hud-item">
-          <p class="hud-prefix">Score:</p>
-          <h2 class="hud-main-text score">0</h2>
-        </div>
-        <div class="time-left-container">
-          <p class="time-left">Time:</p>
-          <p class="time-counter"></p>
+        <div class="right-hud-item-container">
+          <div class="hud-item score-container">
+            <p class="hud-prefix">Score:</p>
+            <h2 class="hud-main-text score">0</h2>
+          </div>
+          <div class="time-left-container">
+            <p class="time-left">Time:</p>
+            <p class="time-counter"></p>
+          </div>
         </div>
       </header>
       <main class="quiz-body">
@@ -64,20 +71,7 @@
           <p class="question-text">What is the Answer to this question?</p>
         </section>
         <section class="multiple-answers">
-          <ol class="answers-list">
-            <li class="answer-1">
-              <button class="choice-btns" data-number="1">Choice 1</button>
-            </li>
-            <li class="answer-2">
-              <button class="choice-btns" data-number="2">Choice 2</button>
-            </li>
-            <li class="answer-3">
-              <button class="choice-btns" data-number="3">Choice 3</button>
-            </li>
-            <li class="answer-4">
-              <button class="choice-btns" data-number="4">Choice 4</button>
-            </li>
-          </ol>
+          <ol class="answers-list"></ol>
         </section>
       </main>
       <footer class="answer-status-section">

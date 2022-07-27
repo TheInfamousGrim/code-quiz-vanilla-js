@@ -1,9 +1,9 @@
 /* ----------------------------- page selectors ----------------------------- */
 
+const loaderWrapper = document.querySelector('.loader-wrapper');
 const quizGameWrapper = document.querySelector('.quiz-game-wrapper');
 const questionAsked = document.querySelector('.question-text');
 const answersList = document.querySelector('.answers-list');
-const choiceBtns = document.querySelectorAll('.choice-btns');
 const timeCounter = document.querySelector('.time-counter');
 const answerStatus = document.querySelector('.answer-status-text');
 const questionCounterText = document.querySelector('.question-counter');
@@ -38,6 +38,10 @@ Your final score is <span class="result-number">69</span>
 <input type="text" name="playerName" id="playerName" />
 <input type="submit" value="Submit" id="submitNameBtn" disabled />
 </form>
+<div class="quiz-completed-links">
+    <a href="/pages/quiz.html" class="quiz-again-btn">Quiz Again</a>
+    <a href="../index.html" class="quiz-rules-btn">Quiz Rules</a>
+</div>
 `;
 
 /* --------------------- starting the quiz on page load --------------------- */
@@ -47,8 +51,10 @@ function startQuiz() {
     const timer = setInterval(() => {
         timeCounter.innerText = seconds;
         seconds--;
-        if (seconds <= 0) {
+        // check if the timer has reached 0 and if the quiz completed page has been generated
+        if (seconds <= 0 && questionCounter < MAX_QUESTIONS - 1) {
             clearInterval(timer);
+            console.log('----------Timer----------');
             // Save score to local storage
             localStorage.setItem('mostRecentScore', scoreCounter + seconds);
             // Remove quiz page and generate completed page
@@ -63,7 +69,6 @@ function startQuiz() {
     availableQuestions = questions;
     getNewQuestion();
 }
-
 /* ----------------------------- fetch questions ---------------------------- */
 
 let questions = [];
@@ -97,6 +102,10 @@ fetch(
             formattedQuestion.answer = correctAnswerNumber;
             return formattedQuestion;
         });
+        setTimeout(() => {
+            quizGameWrapper.classList.remove('hidden');
+            loaderWrapper.classList.add('hidden');
+        }, 1000);
         startQuiz();
     })
     .catch((err) => {
@@ -133,8 +142,6 @@ function generateCompletedQuiz() {
 
 function completedQuizPage() {
     // Selectors for the generated page
-    const resultText = document.querySelector('.result-number');
-    const playerNameForm = document.querySelector('.player-highscore-form');
     const playerName = document.getElementById('playerName');
     const submitNameBtn = document.getElementById('submitNameBtn');
 
@@ -172,11 +179,66 @@ function completedQuizPage() {
     submitNameBtn.addEventListener('click', submitHighScore);
 }
 
-/* ------------------- Accessing new questions and choices ------------------ */
+/* ------------------------ increment score function ------------------------ */
+
+function incrementScore(number) {
+    scoreCounter += number;
+    // Set the score text to the current score count
+    scoreText.innerText = scoreCounter;
+}
+
+/* --------------------- event handler for choice btns ----------------------- */
+
+function handleChoiceBtnClick(e) {
+    // If we're not ready to accept the answers then we return
+    if (!acceptingAnswers) return;
+
+    // To stop the player from clicking immediately
+    acceptingAnswers = false;
+    // Get the current button
+    const selectedBtnChoice = e.target;
+    // Get the data-number data attribute
+    const selectedAnswer = selectedBtnChoice.dataset.number;
+
+    // Check if the choice selected was the correct answer and display the results visually
+    let idToApplyBtn = 'incorrect';
+    if (selectedAnswer === String(currentQuestion.answer)) {
+        idToApplyBtn = 'correct';
+        // Increment score if correct
+        incrementScore(CORRECT_BONUS);
+        // Style the answer CORRECT! text
+        answerStatus.classList.remove('incorrect-status-text');
+        answerStatus.style.visibility = 'visible';
+        answerStatus.classList.add('correct-status-text');
+        answerStatus.innerText = 'CORRECT!';
+    } else {
+        // Subtract time if the answer was incorrect
+        seconds -= 10;
+        // return seconds = 0 if you subtract the time is subtracted below zero
+        if (seconds < 0) {
+            return (seconds = 0);
+        }
+        // Style the answer INCORRECT! text
+        answerStatus.classList.remove('correct-status-text');
+        answerStatus.style.visibility = 'visible';
+        answerStatus.classList.add('incorrect-status-text');
+        answerStatus.innerText = 'INCORRECT!';
+    }
+    // style the button depending on whether it was correct or not
+    selectedBtnChoice.setAttribute('id', idToApplyBtn);
+    // remove the button styles and hide answer status text
+    setTimeout(() => {
+        answerStatus.style.visibility = 'hidden';
+        getNewQuestion();
+    }, 1500);
+}
+
+/* ------------------- Generating new questions and choices ------------------ */
 
 function getNewQuestion() {
-    // Check if all the questions have been answered or the time has run out
-    if (questionCounter >= MAX_QUESTIONS - 1) {
+    // Check if all the questions have been answered and that the completed page hasn't been generated
+    if (questionCounter >= MAX_QUESTIONS - 1 && !quizCompletedWrapper.children.length >= 0) {
+        console.log('--------max-questions------');
         // Save score to local storage
         localStorage.setItem('mostRecentScore', scoreCounter + seconds);
         // Remove quiz page and generate completed page
@@ -196,64 +258,32 @@ function getNewQuestion() {
     // set the question text to the current question being asked
     questionAsked.innerText = currentQuestion.question;
 
-    // fill the choice btns with answer choices
+    // remove previous questions
+    if (answersList.children.length > 0) {
+        removeAllChildElements(answersList);
+    }
+
+    // turn currentQuestion values into an array
+    const rawQuestionArray = Object.values(currentQuestion);
+    // slice of the questions
+    const slicedChoices = rawQuestionArray.slice(1, -1);
+    slicedChoices.forEach((choice, index) => {
+        answersList.innerHTML += `
+        <li class="answer-${index + 1}">
+            <button class="choice-btns" data-number="${index + 1}"></button>
+        </li>
+        `;
+        // Add the choice question (there are sometimes)
+        answersList.lastElementChild.firstElementChild.innerText = choice;
+    });
+
+    // Select all the newly generated choice btns
+    const choiceBtns = document.querySelectorAll('.choice-btns');
+
+    // Add event listeners to generated choice btns
     choiceBtns.forEach((choice) => {
-        const { number } = choice.dataset;
-        choice.innerText = currentQuestion[`choice${number}`];
-        // remove the element if there is no choice present
-        if (choice.innerText === 'undefined') {
-            choice.remove();
-        }
+        choice.addEventListener('click', handleChoiceBtnClick);
     });
 
     acceptingAnswers = true;
 }
-
-/* ------------------------ increment score function ------------------------ */
-
-function incrementScore(number) {
-    scoreCounter += number;
-    // Set the score text to the current score count
-    scoreText.innerText = scoreCounter;
-}
-
-/* --------------------- event listeners for choice btns -------------------- */
-
-choiceBtns.forEach((choice) => {
-    choice.addEventListener('click', (e) => {
-        // If we're not ready to accept the answers then we return
-        if (!acceptingAnswers) return;
-
-        // To stop the player from clicking immediately
-        acceptingAnswers = false;
-        // Get the current button
-        const selectedBtnChoice = e.target;
-        // Get the data-number data attribute
-        const selectedAnswer = selectedBtnChoice.dataset.number;
-
-        // Check if the choice selected was the correct answer and display the results visually
-        let idToApplyBtn = 'incorrect';
-        if (selectedAnswer === String(currentQuestion.answer)) {
-            idToApplyBtn = 'correct';
-            // Increment score if correct
-            incrementScore(CORRECT_BONUS);
-            // Style the answer correct text
-            answerStatus.style.visibility = 'visible';
-            answerStatus.classList.add('correct-status-text');
-            answerStatus.innerText = 'CORRECT!';
-        } else {
-            // Style the answer incorrect text
-            answerStatus.style.visibility = 'visible';
-            answerStatus.classList.add('incorrect-status-text');
-            answerStatus.innerText = 'INCORRECT!';
-        }
-        // style the button depending on whether it was correct or not
-        selectedBtnChoice.setAttribute('id', idToApplyBtn);
-        // remove the button styles and hide answer status text
-        setTimeout(() => {
-            selectedBtnChoice.removeAttribute('id');
-            answerStatus.style.visibility = 'hidden';
-            getNewQuestion();
-        }, 1500);
-    });
-});
