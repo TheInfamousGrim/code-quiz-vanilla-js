@@ -62,15 +62,15 @@ Some of the other things I learned were:
 
 ### Quiz Game Page
 
-![The quiz game page showing a hud, the question being asked and multiple answers to choose](assets/README-imgs/quiz-game-page-screenshot.png)
+![The quiz game page showing a hud, the question being asked and multiple answers to choose](/Assets/README-imgs/quiz-game-page-screenshot.png)
 
 ### Quiz Completed Page
 
-![The page displayed when the quiz is over, showing your final score and a name submission form](assets/README-imgs/quiz-completed-page-screenshot.png)
+![The page displayed when the quiz is over, showing your final score and a name submission form](/Assets/README-imgs/quiz-completed-page-screenshot.png)
 
 ### High Score Page
 
-![A page showing the high scores that are being stored in the local storage](assets/README-imgs/high-score-page-screenshot.png)
+![A page showing the high scores that are being stored in the local storage](/Assets/README-imgs/high-score-page-screenshot.png)
 
 ## Usage
 
