@@ -15,8 +15,17 @@ highScores.map((playerCard) => {
     return (highScoresList.innerHTML += playerHighScoreCard);
 });
 
+/* ------------------ remove all element children function ------------------ */
+
+function removeAllChildElements(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 /* ---------------------------- clear high scores --------------------------- */
 
 clearHighScoresBtn.addEventListener('click', () => {
     localStorage.clear();
+    removeAllChildElements(highScoresList);
 });
