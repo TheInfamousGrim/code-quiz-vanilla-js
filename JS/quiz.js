@@ -19,84 +19,89 @@ let scoreCounter = 0;
 let availableQuestions = [];
 let questionCounter = -1;
 
-const questions = [
-    {
-        question: 'Inside which HTML element do we put the JavaScript??',
-        choice1: '<script>',
-        choice2: '<javascript>',
-        choice3: '<js>',
-        choice4: '<scripting>',
-        answer: 1,
-    },
-    {
-        question: "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        choice1: "<script href='xxx.js'>",
-        choice2: "<script name='xxx.js'>",
-        choice3: "<script src='xxx.js'>",
-        choice4: "<script file='xxx.js'>",
-        answer: 3,
-    },
-    {
-        question: " How do you write 'Hello World' in an alert box?",
-        choice1: "msgBox('Hello World');",
-        choice2: "alertBox('Hello World');",
-        choice3: "msg('Hello World');",
-        choice4: "alert('Hello World');",
-        answer: 4,
-    },
-];
-
 // Quiz rules variables
 const CORRECT_BONUS = 10;
-const MAX_QUESTIONS = 3;
-let seconds = MAX_QUESTIONS * 15;
+const MAX_QUESTIONS = 10;
+let seconds = MAX_QUESTIONS * 10;
 
 /* --------------------------- HTML to be injected -------------------------- */
 
 const quizGameCompletedPage = `
 <h1 class="quiz-completed-title colorful-headers">Quiz Quashed!</h1>
-      <p class="final-score-text">
-        Your final score is <span class="result-number">69</span>
-      </p>
-      <form class="player-highscore-form">
-        <label for="playerName" class="player-name-label"
-          >Enter your name:</label
-        >
-        <input type="text" name="playerName" id="playerName" />
-        <input type="submit" value="Submit" id="submitNameBtn" disabled />
-      </form>
+<p class="final-score-text">
+Your final score is <span class="result-number">69</span>
+</p>
+<form class="player-highscore-form">
+<label for="playerName" class="player-name-label"
+    >Enter your name:</label
+>
+<input type="text" name="playerName" id="playerName" />
+<input type="submit" value="Submit" id="submitNameBtn" disabled />
+</form>
 `;
 
-/* ---------------------------- quiz.io api call ---------------------------- */
+/* --------------------- starting the quiz on page load --------------------- */
 
-// API call variables
-const quizIOAPIKey = 'Uvyti6DXt1klHzPKT90h8U7tc6ejhoCk45Jm05zb';
-const quizQueryURL = `https://quizapi.io/api/v1/questions?apiKey=${quizIOAPIKey}&difficulty=Easy&limit=10&tags=JavaScript`;
+function startQuiz() {
+    // Timer for the quiz
+    const timer = setInterval(() => {
+        timeCounter.innerText = seconds;
+        seconds--;
+        if (seconds <= 0) {
+            clearInterval(timer);
+            // Save score to local storage
+            localStorage.setItem('mostRecentScore', scoreCounter + seconds);
+            // Remove quiz page and generate completed page
+            generateCompletedQuiz();
+            // Functions to run on completed page
+            completedQuizPage();
+        }
+    }, 1000);
 
-let questionArray = [];
-
-// store data in an array of objects
-async function getQuestions() {
-    const response = await fetch(quizQueryURL);
-    const questions = await response.json();
-    return (questionArray = questions);
+    questionCounter = -1;
+    scoreCounter = 0;
+    availableQuestions = questions;
+    getNewQuestion();
 }
 
-getQuestions();
+/* ----------------------------- fetch questions ---------------------------- */
 
-// answers.answer_a
-// question
-// correct answer
+let questions = [];
 
-// function printQuestions() {
-//     questionArray.map((loadedQuestion) => {
-//         const formattedQuestion = {
-//             question: loadedQuestion.question,
-//         };
+fetch(
+    'https://quizapi.io/api/v1/questions?apiKey=Uvyti6DXt1klHzPKT90h8U7tc6ejhoCk45Jm05zb&difficulty=Easy&limit=10&tags=JavaScript'
+)
+    .then((res) => res.json())
+    .then((loadedQuestions) => {
+        questions = loadedQuestions.map((loadedQuestion) => {
+            const formattedQuestion = {
+                question: loadedQuestion.question,
+            };
+            // get the answers from the JSON and filter out the null values
+            const { answers } = loadedQuestion;
+            const rawAnswerChoices = Object.values(answers);
+            const filteredAnswerChoices = rawAnswerChoices.filter((answer) => answer !== null);
 
-//         const correctAnswer = loadedQuestion.correct_answer;
-//     });
-// }
+            // Add the filtered questions to the formattedQuestion object
+            filteredAnswerChoices.forEach((choice, index) => {
+                formattedQuestion[`choice${index + 1}`] = choice;
+            });
+
+            // Get an array of the true/false strings determining whether the answer is correct or not
+            const { correct_answers } = loadedQuestion;
+            const rawCorrectAnswer = Object.values(correct_answers);
+            // Get the index of the true string and +1 so it matches the choice number
+            const correctAnswerNumber = rawCorrectAnswer.indexOf('true') + 1;
+
+            // Add the answer number to the formattedQuestion object
+            formattedQuestion.answer = correctAnswerNumber;
+            return formattedQuestion;
+        });
+        startQuiz();
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 
 /* -------------- remove quiz game page and add completed page -------------- */
 
@@ -132,8 +137,6 @@ function completedQuizPage() {
     const playerNameForm = document.querySelector('.player-highscore-form');
     const playerName = document.getElementById('playerName');
     const submitNameBtn = document.getElementById('submitNameBtn');
-
-    // Maximum number of high scores displayed
 
     // Get a reference to the most recent score
     const mostRecentScore = localStorage.getItem('mostRecentScore');
@@ -172,7 +175,7 @@ function completedQuizPage() {
 /* ------------------- Accessing new questions and choices ------------------ */
 
 function getNewQuestion() {
-    // Check if all the questions have been answered
+    // Check if all the questions have been answered or the time has run out
     if (questionCounter >= MAX_QUESTIONS - 1) {
         // Save score to local storage
         localStorage.setItem('mostRecentScore', scoreCounter + seconds);
@@ -197,6 +200,10 @@ function getNewQuestion() {
     choiceBtns.forEach((choice) => {
         const { number } = choice.dataset;
         choice.innerText = currentQuestion[`choice${number}`];
+        // remove the element if there is no choice present
+        if (choice.innerText === 'undefined') {
+            choice.remove();
+        }
     });
 
     acceptingAnswers = true;
@@ -250,23 +257,3 @@ choiceBtns.forEach((choice) => {
         }, 1500);
     });
 });
-
-/* --------------------- starting the quiz on page load --------------------- */
-
-function startQuiz() {
-    // Timer for the quiz
-    const timer = setInterval(() => {
-        timeCounter.innerText = seconds;
-        seconds--;
-        if (seconds < 0) {
-            clearInterval(timer);
-        }
-    }, 1000);
-
-    questionCounter = -1;
-    scoreCounter = 0;
-    availableQuestions = [...questions];
-    getNewQuestion();
-}
-
-startQuiz();
