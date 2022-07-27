@@ -133,19 +133,40 @@ function completedQuizPage() {
     const playerName = document.getElementById('playerName');
     const submitNameBtn = document.getElementById('submitNameBtn');
 
-    // Save playerName and high score to local storage
+    // Maximum number of high scores displayed
 
-    
+    // Get a reference to the most recent score
+    const mostRecentScore = localStorage.getItem('mostRecentScore');
 
-    // Event handler for player name submission
+    // Get a reference to the high scores
+    const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+
+    // Event for player name submit btn
     playerName.addEventListener('keyup', () => {
-        console.log(finalScore);
         submitNameBtn.disabled = !playerName.value;
     });
 
     function submitHighScore(e) {
         e.preventDefault();
+        // Store the score in an object
+        const score = {
+            score: mostRecentScore,
+            name: playerName.value,
+        };
+        // push the score into the array
+        highScores.push(score);
+        // sort from highest score to lowest score
+        highScores.sort((a, b) => b.score - a.score);
+        // cut out the lowest scores
+        highScores.splice(5);
+        // Save the scores to the local storage
+        localStorage.setItem('highScores', JSON.stringify(highScores));
+        // Go to the high scores page
+        window.location.assign('/pages/highscores.html');
     }
+
+    // event listener
+    submitNameBtn.addEventListener('click', submitHighScore);
 }
 
 /* ------------------- Accessing new questions and choices ------------------ */
