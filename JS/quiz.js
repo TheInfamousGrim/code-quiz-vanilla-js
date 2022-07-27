@@ -54,6 +54,7 @@ function startQuiz() {
         // check if the timer has reached 0 and if the quiz completed page has been generated
         if (seconds <= 0 && questionCounter < MAX_QUESTIONS - 1) {
             clearInterval(timer);
+            seconds = 0;
             console.log('----------Timer----------');
             // Save score to local storage
             localStorage.setItem('mostRecentScore', scoreCounter + seconds);
