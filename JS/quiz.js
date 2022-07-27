@@ -49,6 +49,23 @@ const questions = [
 // Quiz rules variables
 const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 3;
+let seconds = MAX_QUESTIONS * 15;
+
+/* --------------------------- HTML to be injected -------------------------- */
+
+const quizGameCompletedPage = `
+<h1 class="quiz-completed-title colorful-headers">Quiz Quashed!</h1>
+      <p class="final-score-text">
+        Your final score is <span class="result-number">69</span>
+      </p>
+      <form class="player-highscore-form">
+        <label for="playerName" class="player-name-label"
+          >Enter your name:</label
+        >
+        <input type="text" name="playerName" id="playerName" />
+        <input type="submit" value="Submit" id="submitNameBtn" disabled />
+      </form>
+`;
 
 /* ---------------------------- quiz.io api call ---------------------------- */
 
@@ -81,16 +98,67 @@ getQuestions();
 //     });
 // }
 
+/* -------------- remove quiz game page and add completed page -------------- */
+
+function removeAllChildElements(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+function generateCompletedQuiz() {
+    // Removes the quiz game from the DOM
+    removeAllChildElements(quizGameWrapper);
+    // Make the quiz game wrapper invisible
+    quizGameWrapper.style.display = 'none';
+    // Display the quiz completed wrapper
+    quizCompletedWrapper.style.display = 'flex';
+    // Purify the HTML to be added
+    const cleanCompletedPage = DOMPurify.sanitize(quizGameCompletedPage, { USE_PROFILE: { html: true } });
+    // Add purified completed quiz page
+    quizCompletedWrapper.innerHTML += cleanCompletedPage;
+    // Update the final score text
+    const resultText = document.querySelector('.result-number');
+    const mostRecentScore = localStorage.getItem('mostRecentScore');
+    resultText.innerText = mostRecentScore;
+    return quizCompletedWrapper;
+}
+
+/* ----------------- submit final score to high scores page ----------------- */
+
+function completedQuizPage() {
+    // Selectors for the generated page
+    const resultText = document.querySelector('.result-number');
+    const playerNameForm = document.querySelector('.player-highscore-form');
+    const playerName = document.getElementById('playerName');
+    const submitNameBtn = document.getElementById('submitNameBtn');
+
+    // Save playerName and high score to local storage
+
+    
+
+    // Event handler for player name submission
+    playerName.addEventListener('keyup', () => {
+        console.log(finalScore);
+        submitNameBtn.disabled = !playerName.value;
+    });
+
+    function submitHighScore(e) {
+        e.preventDefault();
+    }
+}
+
 /* ------------------- Accessing new questions and choices ------------------ */
 
 function getNewQuestion() {
     // Check if all the questions have been answered
     if (questionCounter >= MAX_QUESTIONS - 1) {
-        // Hides the quiz game
-        quizGameWrapper.classList.add('hidden');
-        // update the score text
-        // Displays the completed quiz section
-        quizCompletedWrapper.style.display = 'flex';
+        // Save score to local storage
+        localStorage.setItem('mostRecentScore', scoreCounter + seconds);
+        // Remove quiz page and generate completed page
+        generateCompletedQuiz();
+        // Functions to run on completed page
+        completedQuizPage();
         return;
     }
 
@@ -166,7 +234,6 @@ choiceBtns.forEach((choice) => {
 
 function startQuiz() {
     // Timer for the quiz
-    let seconds = MAX_QUESTIONS * 15;
     const timer = setInterval(() => {
         timeCounter.innerText = seconds;
         seconds--;
