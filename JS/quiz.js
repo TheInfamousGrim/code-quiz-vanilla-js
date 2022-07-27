@@ -55,7 +55,6 @@ function startQuiz() {
         if (seconds <= 0 && questionCounter < MAX_QUESTIONS - 1) {
             clearInterval(timer);
             seconds = 0;
-            console.log('----------Timer----------');
             // Save score to local storage
             localStorage.setItem('mostRecentScore', scoreCounter + seconds);
             // Remove quiz page and generate completed page
@@ -239,7 +238,6 @@ function handleChoiceBtnClick(e) {
 function getNewQuestion() {
     // Check if all the questions have been answered and that the completed page hasn't been generated
     if (questionCounter >= MAX_QUESTIONS - 1 && !quizCompletedWrapper.children.length >= 0) {
-        console.log('--------max-questions------');
         // Save score to local storage
         localStorage.setItem('mostRecentScore', scoreCounter + seconds);
         // Remove quiz page and generate completed page
@@ -269,11 +267,13 @@ function getNewQuestion() {
     // slice of the questions
     const slicedChoices = rawQuestionArray.slice(1, -1);
     slicedChoices.forEach((choice, index) => {
-        answersList.innerHTML += `
+        const filthyBtnChoice = `
         <li class="answer-${index + 1}">
             <button class="choice-btns" data-number="${index + 1}"></button>
         </li>
         `;
+        const cleanBtnChoice = DOMPurify.sanitize(filthyBtnChoice, { USE_PROFILE: { html: true } });
+        answersList.innerHTML += cleanBtnChoice;
         // Add the choice question (there are sometimes)
         answersList.lastElementChild.firstElementChild.innerText = choice;
     });
