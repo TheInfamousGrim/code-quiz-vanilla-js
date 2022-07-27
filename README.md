@@ -3,7 +3,7 @@
 ## Table of Contents
 
 1. [Description](#description)
-2. [Screenshot](#screenshot)
+2. [Screenshots](#screenshots)
 3. [Usage](#usage)
 4. [Technology](#technology)
 5. [Features](#features)
@@ -52,12 +52,13 @@ Some of the other things I learned were:
 - I also picked up how to make a basic page loader thanks to [w3schools](https://www.w3schools.com/howto/howto_css_loader.asp)
 - Convert objects into arrays and use array methods such as sort, map and filter to display the
 - Updating UI elements based on user input
+- Sanitize dirty strings so that they can be used for generating user input HTML thanks to [DOMPurify](https://github.com/cure53/DOMPurify)
 
-## Screenshot
+## Screenshots
 
 ### Home Page
 
-![The homepage of the multiple choice quiz app, explaining the rules of the game](assets/README-imgs/quiz-intro-page-screenshot.png)
+![The homepage of the multiple choice quiz app, explaining the rules of the game](/Assets/README-imgs/quiz-intro-page-screenshot.png)
 
 ### Quiz Game Page
 
@@ -85,6 +86,7 @@ The technology used for the development of this site was:
 - Flexbox
 - JavaScript
 - [QuizAPI.io](https://quizapi.io/)
+- [DOMPurify](https://github.com/cure53/DOMPurify)
 
 ## Features
 
@@ -103,6 +105,7 @@ Made with the help of:
 
 - [University of Birmingham Coding Bootcamp](https://www.birmingham.ac.uk/postgraduate/courses/cpd/coding-boot-camp.aspx)
 - [QuizAPI.io](https://quizapi.io/)
+- [DOMPurify](https://github.com/cure53/DOMPurify)
 - [w3schools](https://www.w3schools.com/howto/howto_css_loader.asp)
 - [Favicon.io](https://favicon.io/)
 
