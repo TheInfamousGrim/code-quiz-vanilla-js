@@ -172,7 +172,7 @@ function completedQuizPage() {
         // Save the scores to the local storage
         localStorage.setItem('highScores', JSON.stringify(highScores));
         // Go to the high scores page
-        window.location.assign('/pages/highscores.html');
+        window.location.assign('../pages/highscores.html');
     }
 
     // event listener
